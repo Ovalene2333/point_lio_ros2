@@ -1,0 +1,49 @@
+# Compiled source #
+###################
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+*.out
+*.a
+*.pyc
+*.pyo
+*.pyd
+
+# ROS2 build and install folders
+build/
+install/
+log/
+
+# Python virtual environments
+venv/
+.env/
+env/
+
+# macOS
+.DS_Store
+
+# Editor files
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+
+# CMake
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# ROS2 colcon
+.colcon/
+.colcon_install_layout
+
+# Test results
+test_results/
+
+# Other
+*.log
