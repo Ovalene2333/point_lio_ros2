@@ -119,9 +119,9 @@ Clone the repository and catkin_make:
 Connect to your PC to Livox Mid360 LiDAR by following  [Livox-ros-driver2 installation](https://github.com/Livox-SDK/livox_ros_driver2), then
 
 ```sh
-    cd ~/$Point_LIO_ROS_DIR$
+    cd ~/$point_lio_ros2_ROS_DIR$
     source install/setup.bash
-    ros2 launch point_lio point_lio.launch.py
+    ros2 launch point_lio_ros2 point_lio_ros2.launch.py
 ```
 
 - For livox serials, Point-LIO only support the data collected by the ` msg_mid360_launch.py.launch ` since only its ` livox_ros_driver2/msg/CustomMsg ` data structure produces the timestamp of each LiDAR point which is very important for Point-LIO. ` rviz_mid360_launch.py ` can not produce it right now.
@@ -175,9 +175,9 @@ Edit ` config/veoldy16.yaml ` to set the below parameters:
 Step B: Run below
 
 ```sh
-    cd ~/$Point_LIO_ROS_DIR$
+    cd ~/$point_lio_ros2_ROS_DIR$
     source install/setup.bash
-    ros2 launch point_lio point_lio.launch.py rviz:=True point_lio_cfg_dir:=/path/to/Point-LIO/config/velody16.yaml
+    ros2 launch point_lio_ros2 point_lio_ros2.launch.py rviz:=True point_lio_ros2_cfg_dir:=/path/to/Point-LIO/config/velody16.yaml
 ```
 
 Step C: Run LiDAR's ros driver or play rosbag.
