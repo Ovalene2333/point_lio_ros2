@@ -6,7 +6,7 @@ Panels:
       Expanded:
         - /Global Options1
         - /Status1
-        - /Mapping1/CloudReg1
+        - /Mapping1
         - /TF2
         - /TF2/Frames1
       Splitter Ratio: 0.5
@@ -55,17 +55,9 @@ Visualization Manager:
       Frame Timeout: 15
       Frames:
         All Enabled: true
-        base_link:
-          Value: true
-        body:
+        aft_mapped:
           Value: true
         camera_init:
-          Value: true
-        camera_link:
-          Value: true
-        map:
-          Value: true
-        map3d:
           Value: true
       Marker Scale: 1
       Name: TF
@@ -73,13 +65,9 @@ Visualization Manager:
       Show Axes: true
       Show Names: false
       Tree:
-        map:
-          map3d:
-            camera_init:
-              body:
-                base_link:
-                  camera_link:
-                    {}
+        camera_init:
+          aft_mapped:
+            {}
       Update Interval: 0
       Value: true
     - Class: rviz_common/Group
@@ -99,7 +87,7 @@ Visualization Manager:
           Enabled: true
           Invert Rainbow: false
           Max Color: 255; 255; 255
-          Max Intensity: 151
+          Max Intensity: 185
           Min Color: 0; 0; 0
           Min Intensity: 0
           Name: CloudReg
@@ -130,10 +118,10 @@ Visualization Manager:
           Color: 255; 255; 255
           Color Transformer: Intensity
           Decay Time: 120
-          Enabled: false
+          Enabled: true
           Invert Rainbow: false
           Max Color: 255; 255; 255
-          Max Intensity: 181
+          Max Intensity: 185
           Min Color: 0; 0; 0
           Min Intensity: 0
           Name: Accumulate
@@ -148,10 +136,10 @@ Visualization Manager:
             Filter size: 10
             History Policy: Keep Last
             Reliability Policy: Reliable
-            Value: /cloud_registered_dense
+            Value: /cloud_registered
           Use Fixed Frame: true
           Use rainbow: true
-          Value: false
+          Value: true
       Enabled: true
       Name: Mapping
     - Alpha: 0.5
@@ -193,17 +181,9 @@ Visualization Manager:
       Frame Timeout: 15
       Frames:
         All Enabled: true
-        base_link:
-          Value: true
-        body:
+        aft_mapped:
           Value: true
         camera_init:
-          Value: true
-        camera_link:
-          Value: true
-        map:
-          Value: true
-        map3d:
           Value: true
       Marker Scale: 3
       Name: TF
@@ -211,13 +191,9 @@ Visualization Manager:
       Show Axes: true
       Show Names: false
       Tree:
-        map:
-          map3d:
-            camera_init:
-              body:
-                base_link:
-                  camera_link:
-                    {}
+        camera_init:
+          aft_mapped:
+            {}
       Update Interval: 0
       Value: true
   Enabled: true
@@ -266,7 +242,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 27.36379623413086
+      Distance: 27.289775848388672
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -281,10 +257,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 1.1947972774505615
+      Pitch: 1.254797339439392
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 3.0053915977478027
+      Yaw: 3.165390968322754
     Saved: ~
 Window Geometry:
   Displays:
@@ -302,5 +278,5 @@ Window Geometry:
   Views:
     collapsed: true
   Width: 2548
-  X: 0
-  Y: 0
+  X: -32
+  Y: -32

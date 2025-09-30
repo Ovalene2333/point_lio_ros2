@@ -8,10 +8,12 @@
 #include <tf2_ros/transform_broadcaster.h>
 #include <tf2_ros/transform_listener.h>
 
+#include <cstdio>
 #include <nav_msgs/msg/odometry.hpp>
 #include <nav_msgs/msg/path.hpp>
 
 #include "li_initialization.h"
+#include "parameters.h"
 
 using namespace std;
 
@@ -358,7 +360,7 @@ int main(int argc, char** argv) {
 
     //------------------------------------------------------------------------------------------------------
     signal(SIGINT, SigHandle);
-    rclcpp::Rate rate(500);
+    rclcpp::Rate rate(200);
     while (rclcpp::ok()) {
         if (flg_exit) break;
         executor.spin_some();
@@ -381,7 +383,9 @@ int main(int argc, char** argv) {
                 flg_reset = false;
                 init_map = false;
 
-                { ivox_.reset(new IVoxType(ivox_options_)); }
+                {
+                    ivox_.reset(new IVoxType(ivox_options_));
+                }
             }
 
             if (flg_first_scan) {
@@ -473,7 +477,9 @@ int main(int argc, char** argv) {
             if (!init_map) {
                 feats_down_world->resize(feats_undistort->size());
                 for (int i = 0; i < feats_undistort->size(); i++) {
-                    { pointBodyToWorld(&(feats_undistort->points[i]), &(feats_down_world->points[i])); }
+                    {
+                        pointBodyToWorld(&(feats_undistort->points[i]), &(feats_down_world->points[i]));
+                    }
                 }
                 for (size_t i = 0; i < feats_down_world->size(); i++) {
                     init_feats_world->points.emplace_back(feats_down_world->points[i]);
@@ -939,7 +945,9 @@ int main(int argc, char** argv) {
             if (runtime_pos_log) {
                 frame_num++;
                 aver_time_consu = aver_time_consu * (frame_num - 1) / frame_num + (t5 - t0) / frame_num;
-                { aver_time_icp = aver_time_icp * (frame_num - 1) / frame_num + update_time / frame_num; }
+                {
+                    aver_time_icp = aver_time_icp * (frame_num - 1) / frame_num + update_time / frame_num;
+                }
                 aver_time_match = aver_time_match * (frame_num - 1) / frame_num + (match_time) / frame_num;
                 aver_time_solve = aver_time_solve * (frame_num - 1) / frame_num + solve_time / frame_num;
                 aver_time_propag = aver_time_propag * (frame_num - 1) / frame_num + propag_time / frame_num;
@@ -979,9 +987,13 @@ int main(int argc, char** argv) {
     //--------------------------save map-----------------------------------
     /* 1. make sure you have enough memories
       /* 2. noted that pcd save will influence the real-time performences **/
+    printf("start saving map to pcd file, total points: %d\n file path: %s", (int)pcl_wait_save->size(),
+           pcd_save_file_path.c_str());
+      
     if (pcl_wait_save->size() > 0 && pcd_save_en) {
-        string file_name = string("scans.pcd");
-        string all_points_dir(string(string(ROOT_DIR) + "PCD/") + file_name);
+        // Determine full path: absolute as-is; relative to ROOT_DIR otherwise
+        std::string target = pcd_save_file_path.empty() ? std::string("PCD/scans.pcd") : pcd_save_file_path;
+        std::string all_points_dir = (target.size() > 0 && target[0] == '/') ? target : std::string(ROOT_DIR) + target;
         pcl::PCDWriter pcd_writer;
         pcd_writer.writeBinary(all_points_dir, *pcl_wait_save);
     }
