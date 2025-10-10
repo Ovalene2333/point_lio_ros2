@@ -1,4 +1,10 @@
 #include "li_initialization.h"
+#include "imu_orientation_ekf.h"
+
+namespace {
+constexpr double kDegreesPerRad = 57.29577951308232;
+const auto ORI_EKF_LOGGER = rclcpp::get_logger("OrientationEkf");
+}
 bool data_accum_finished = false, data_accum_start = false, online_calib_finish = false,
      refine_print = false;
 int frame_num_init = 0;
@@ -172,6 +178,24 @@ void imu_cbk(const sensor_msgs::msg::Imu::ConstSharedPtr & msg_in)
     // mtx_buffer.unlock();
     // sig_buffer.notify_all();
     return;
+  }
+
+  {
+    std::lock_guard<std::mutex> lock(GetOrientationEkfMutex());
+    Eigen::Vector3d gyro(msg->angular_velocity.x, msg->angular_velocity.y, msg->angular_velocity.z);
+    ImuOrientationEkf& orientation_ekf = GetOrientationEkf();
+    orientation_ekf.processImuSample(timestamp, gyro);
+
+    static size_t imu_sample_debug_counter = 0;
+    if (++imu_sample_debug_counter % 200 == 0) {
+      Eigen::Vector3d euler_deg = orientation_ekf.euler() * kDegreesPerRad;
+      RCLCPP_INFO(ORI_EKF_LOGGER,
+                  "IMU EKF sample #%zu t=%.6f rpy(deg)=[%.2f %.2f %.2f] gyro=[%.3f %.3f %.3f]",
+                  imu_sample_debug_counter,
+                  timestamp,
+                  euler_deg(0), euler_deg(1), euler_deg(2),
+                  gyro(0), gyro(1), gyro(2));
+    }
   }
   imu_deque.emplace_back(msg);
   last_timestamp_imu = timestamp;
